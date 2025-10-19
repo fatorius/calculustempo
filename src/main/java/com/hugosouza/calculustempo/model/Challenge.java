@@ -8,14 +8,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "challenges")
+public class Challenge {
     @Id
     private Long id;
 
-    @Column(unique = true)
-    private String username;
+    @Column()
+    private String expression_latex;
 
     @Column()
-    private String password;
+    private String solution_latex;
+
+    @Column()
+    private int rating;
 }

@@ -8,7 +8,7 @@ import com.hugosouza.calculustempo.model.User;
 import com.hugosouza.calculustempo.repository.UserRepository;
 import com.hugosouza.calculustempo.security.JwtUtil;
 import com.hugosouza.calculustempo.util.IdGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,18 +17,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    JwtUtil jwtUtils;
+    private final JwtUtil jwtUtils;
 
     @PostMapping("/login")
     public ResponseData<LoginResponse> authenticateUser(@RequestBody User user) {
@@ -61,6 +58,7 @@ public class AuthController {
         );
 
         userRepository.save(newUser);
+
         return new SuccessResponse<>(newUser);
     }
 }
