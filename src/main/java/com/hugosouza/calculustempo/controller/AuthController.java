@@ -7,6 +7,7 @@ import com.hugosouza.calculustempo.interfaces.SuccessResponse;
 import com.hugosouza.calculustempo.model.User;
 import com.hugosouza.calculustempo.repository.UserRepository;
 import com.hugosouza.calculustempo.security.JwtUtil;
+import com.hugosouza.calculustempo.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,7 @@ public class AuthController {
         }
 
         User newUser = new User(
-                null,
+                IdGenerator.nextId(),
                 user.getUsername(),
                 encoder.encode(user.getPassword())
         );
