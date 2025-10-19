@@ -16,7 +16,7 @@ public class Challenge {
     private Long id;
 
     @Column()
-    private Integer user_id;
+    private Long user_id;
 
     @Column()
     private Long integral_id;
@@ -35,6 +35,12 @@ public class Challenge {
 
     public Challenge(Long id, Long integralId) {
         this.id = id;
+        this.integral_id = integralId;
+    }
+
+    public Challenge(Long id, Long userId, Long integralId) {
+        this.id = id;
+        this.user_id = userId;
         this.integral_id = integralId;
     }
 }

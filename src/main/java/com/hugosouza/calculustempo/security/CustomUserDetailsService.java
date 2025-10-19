@@ -2,15 +2,16 @@ package com.hugosouza.calculustempo.security;
 
 import com.hugosouza.calculustempo.model.User;
 import com.hugosouza.calculustempo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService  implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
