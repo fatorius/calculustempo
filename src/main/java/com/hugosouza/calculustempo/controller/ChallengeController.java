@@ -1,6 +1,9 @@
 package com.hugosouza.calculustempo.controller;
 
+import com.hugosouza.calculustempo.dto.ChallengeAnswerRequest;
+import com.hugosouza.calculustempo.dto.ChallengeAnswerResponse;
 import com.hugosouza.calculustempo.dto.GetAChallengeResponse;
+import com.hugosouza.calculustempo.interfaces.ErrorResponse;
 import com.hugosouza.calculustempo.interfaces.ResponseData;
 import com.hugosouza.calculustempo.interfaces.SuccessResponse;
 import com.hugosouza.calculustempo.model.Challenge;
@@ -13,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/challenge")
@@ -38,5 +43,21 @@ public class ChallengeController {
 
         Integral chosenIntegral = integralRepository.getReferenceById(createdChallenge.getIntegral_id());
         return new SuccessResponse<>(new GetAChallengeResponse(createdChallenge.getId(), chosenIntegral.getExpression_latex()));
+    }
+
+    @PostMapping("answer/{challenge_id}")
+    public ResponseData<ChallengeAnswerResponse> getChallengeById(
+            @PathVariable("challenge_id") Long challengeId,
+            @RequestBody ChallengeAnswerRequest challengeAnswerRequest
+    ) {
+        Optional<Challenge> challenge = challengeService.findById(challengeId);
+
+        if (challenge.isEmpty()){
+            return new ErrorResponse<>("Challenge not found");
+        }
+
+        ChallengeAnswerResponse response = challengeService.answerChallenge(challenge.get(), challengeAnswerRequest.getAnswer());
+
+        return new SuccessResponse<>(response);
     }
 }
