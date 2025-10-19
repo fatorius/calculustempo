@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "challenges")
-public class Challenge {
+@Table(name = "integrals")
+public class Integral {
     @Id
     private Long id;
 

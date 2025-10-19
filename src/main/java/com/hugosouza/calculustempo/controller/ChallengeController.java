@@ -3,7 +3,7 @@ package com.hugosouza.calculustempo.controller;
 import com.hugosouza.calculustempo.dto.GetAChallengeResponse;
 import com.hugosouza.calculustempo.interfaces.ResponseData;
 import com.hugosouza.calculustempo.interfaces.SuccessResponse;
-import com.hugosouza.calculustempo.model.Challenge;
+import com.hugosouza.calculustempo.model.Integral;
 import com.hugosouza.calculustempo.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,12 +22,12 @@ public class ChallengeController {
             @RequestParam(name = "level", defaultValue = "1800") int level
     ) {
         if (userDetails == null) {
-            Challenge chosenChallenge = challengeService.pickARandomChallenge(level);
+            Integral chosenChallenge = challengeService.pickARandomIntegral(level);
             return new SuccessResponse<>(new GetAChallengeResponse(chosenChallenge.getId(), chosenChallenge.getExpression_latex()));
         }
 
 
-        Challenge chosenChallenge = challengeService.pickARandomChallenge(level);
+        Integral chosenChallenge = challengeService.pickARandomIntegral(level);
         return new SuccessResponse<>(new GetAChallengeResponse(chosenChallenge.getId(), chosenChallenge.getExpression_latex()));
     }
 }

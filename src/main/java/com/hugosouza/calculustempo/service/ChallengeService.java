@@ -1,7 +1,7 @@
 package com.hugosouza.calculustempo.service;
 
-import com.hugosouza.calculustempo.model.Challenge;
-import com.hugosouza.calculustempo.repository.ChallengeRepository;
+import com.hugosouza.calculustempo.model.Integral;
+import com.hugosouza.calculustempo.repository.IntegralRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChallengeService {
 
-    private final ChallengeRepository challengeRepository;
+    private final IntegralRepository integralRepository;
 
     private static final int RATING_RANGE = 200;
 
-    public Challenge pickARandomChallenge(int rating){
+    public Integral pickARandomIntegral(int rating){
         int minRating = rating - RATING_RANGE;
         int maxRating = rating + RATING_RANGE;
 
-        return challengeRepository.findRandomChallengeInRange(minRating, maxRating);
+        return integralRepository.findRandomIntegralInRange(minRating, maxRating);
     }
 }

@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseData<?> handleGeneric(Exception ex) {
-        System.out.println(ex.getMessage());
         return new ErrorResponse<>("Erro interno no servidor.");
     }
 }
