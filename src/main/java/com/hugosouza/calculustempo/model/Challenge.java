@@ -3,7 +3,7 @@ package com.hugosouza.calculustempo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class Challenge {
     private Integer new_integral_rating;
 
     @Column()
-    private Date played_at = new Date();
+    private LocalDateTime played_at = LocalDateTime.now();
 
     public Challenge(Long id, Long integralId) {
         this.id = id;

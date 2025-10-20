@@ -21,4 +21,10 @@ public class Integral {
 
     @Column()
     private int rating;
+
+    @Column()
+    private double rating_deviation;
+
+    @Column()
+    private double volatility;
 }

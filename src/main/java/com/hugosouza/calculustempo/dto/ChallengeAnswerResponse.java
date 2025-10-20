@@ -10,8 +10,12 @@ public class ChallengeAnswerResponse {
     @JsonProperty
     private final IntegralDTO integral;
 
-    public ChallengeAnswerResponse(boolean correct, Integral integral) {
+    @JsonProperty
+    private final int newRating;
+
+    public ChallengeAnswerResponse(boolean correct, Integral integral, int newRating) {
         this.correct = correct;
-        this.integral = new IntegralDTO(integral);;
+        this.integral = new IntegralDTO(integral);
+        this.newRating = newRating;
     }
 }

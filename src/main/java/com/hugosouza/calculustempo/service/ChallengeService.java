@@ -8,6 +8,7 @@ import com.hugosouza.calculustempo.repository.ChallengeRepository;
 import com.hugosouza.calculustempo.repository.IntegralRepository;
 import com.hugosouza.calculustempo.repository.UserRepository;
 import com.hugosouza.calculustempo.util.IdGenerator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,10 @@ public class ChallengeService {
     private final IntegralService integralService;
     private final ChallengeRepository challengeRepository;
     private final IntegralRepository integralRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     private static final int USER_DEFAULT_RANGE = 30;
-    private final UserRepository userRepository;
 
     public Optional<Challenge> findById(long challengeId){
         return challengeRepository.findById(challengeId);
@@ -63,21 +65,31 @@ public class ChallengeService {
         return this.createChallengeForUser(user);
     }
 
+    @Transactional
     public ChallengeAnswerResponse answerChallenge(Challenge challenge, String answer){
-        Integral challengeIntegral = integralRepository.getReferenceById(challenge.getIntegral_id());
+        Challenge managedChallenge = challengeRepository.getReferenceById(challenge.getId());
+
+        Integral challengeIntegral = integralRepository.getReferenceById(managedChallenge.getIntegral_id());
 
         boolean correct = challengeIntegral.getSolution_latex().equals(answer);
+        managedChallenge.setResult_success(correct);
 
-        if (challenge.getUser_id() != null){
-            User user = userRepository.getReferenceById(challenge.getUser_id());
-            this.updateRatings(user, challengeIntegral);
+        int userNewRating = 0;
+        if (managedChallenge.getUser_id() != null){
+            User user = userRepository.getReferenceById(managedChallenge.getUser_id());
+
+            userNewRating = userService.updateUserRatings(user, challengeIntegral, correct);
+            int integralNewRating = integralService.updateIntegralRatings(user, challengeIntegral, correct);
+
+            this.updateRatingsOnChallenge(managedChallenge, userNewRating, integralNewRating);
         }
 
-        return new ChallengeAnswerResponse(correct, challengeIntegral);
+        return new ChallengeAnswerResponse(correct, challengeIntegral, userNewRating);
     }
 
-    private void updateRatings(User user, Integral integral){
-
+    private void updateRatingsOnChallenge(Challenge challenge, int userRating, int integralRating){
+        challenge.setNew_integral_rating(integralRating);
+        challenge.setNew_user_rating(userRating);
     }
 
     private boolean userHasAnActiveChallenge(User user){

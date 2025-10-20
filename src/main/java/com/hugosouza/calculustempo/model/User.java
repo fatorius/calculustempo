@@ -3,6 +3,8 @@ package com.hugosouza.calculustempo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,10 +24,22 @@ public class User {
     @Column()
     private int rating;
 
+    @Column()
+    private double rating_deviation;
+
+    @Column()
+    private double volatility;
+
+    @Column()
+    private LocalDateTime last_updated;
+
     public User(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.rating = 1500;
+        this.rating_deviation = 350f;
+        this.volatility = 0.06f;
+        this.last_updated = LocalDateTime.now();
     }
 }
