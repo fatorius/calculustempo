@@ -18,6 +18,9 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    @Column(unique = true)
+    private String email;
+
     @Column()
     private String password;
 
@@ -33,9 +36,10 @@ public class User {
     @Column()
     private LocalDateTime last_updated;
 
-    public User(Long id, String username, String password) {
+    public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.rating = 1500;
         this.rating_deviation = 350f;

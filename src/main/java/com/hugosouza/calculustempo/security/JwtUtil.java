@@ -15,11 +15,10 @@ public class JwtUtil {
     private String jwtSecret;
 
     @Value("${JWT_EXPIRATION_MS}")
-    private int jwtExpirationMs;
-
+    private long jwtExpirationMs;
 
     @Value("${REFRESH_EXPIRATION_MS}")
-    private int refreshExpirationMs;
+    private long refreshExpirationMs;
 
     private SecretKey key;
 

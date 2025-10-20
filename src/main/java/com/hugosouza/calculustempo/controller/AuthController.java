@@ -54,9 +54,14 @@ public class AuthController {
             return new ErrorResponse<>(false, "Username already exists");
         }
 
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return new ErrorResponse<>(false, "Email already exists");
+        }
+
         User newUser = new User(
                 IdGenerator.nextId(),
                 user.getUsername(),
+                user.getEmail(),
                 encoder.encode(user.getPassword())
         );
 
