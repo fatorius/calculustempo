@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -39,8 +41,9 @@ public class AuthController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         String token = jwtUtils.generateToken(userDetails.getUsername());
+        String refreshToken = jwtUtils.generateRefreshToken(userDetails.getUsername());
 
-        LoginResponse loginResponse = new LoginResponse(token, "");
+        LoginResponse loginResponse = new LoginResponse(token, refreshToken);
 
         return new SuccessResponse<>(loginResponse);
     }
@@ -60,5 +63,19 @@ public class AuthController {
         userRepository.save(newUser);
 
         return new SuccessResponse<>(newUser);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseData<LoginResponse> refreshToken(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+
+        if (refreshToken == null || !jwtUtils.validateJwtToken(refreshToken)) {
+            return new ErrorResponse<>("Invalid refresh token");
+        }
+
+        String username = jwtUtils.getUsernameFromToken(refreshToken);
+        String newAccessToken = jwtUtils.generateToken(username);
+
+        return new SuccessResponse<>(new LoginResponse(newAccessToken, refreshToken));
     }
 }

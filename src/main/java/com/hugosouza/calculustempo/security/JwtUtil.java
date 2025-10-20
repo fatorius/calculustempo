@@ -17,6 +17,10 @@ public class JwtUtil {
     @Value("${JWT_EXPIRATION_MS}")
     private int jwtExpirationMs;
 
+
+    @Value("${REFRESH_EXPIRATION_MS}")
+    private int refreshExpirationMs;
+
     private SecretKey key;
 
     @PostConstruct
@@ -29,6 +33,15 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + refreshExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
