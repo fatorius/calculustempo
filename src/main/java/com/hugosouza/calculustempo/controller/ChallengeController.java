@@ -46,7 +46,8 @@ public class ChallengeController {
     }
 
     @PostMapping("answer/{challenge_id}")
-    public ResponseData<ChallengeAnswerResponse> getChallengeById(
+    public ResponseData<ChallengeAnswerResponse> answerChallenge(
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("challenge_id") Long challengeId,
             @RequestBody ChallengeAnswerRequest challengeAnswerRequest
     ) {
@@ -56,6 +57,16 @@ public class ChallengeController {
             return new ErrorResponse<>("Challenge not found");
         }
 
+        Long challengeUserId = challenge.get().getUser_id();
+
+        if (userDetails != null && challengeUserId != null) {
+            User user = userRepository.findByUsername(userDetails.getUsername());
+
+            if (!challengeUserId.equals(user.getId())){
+                return new ErrorResponse<>("Unauthorized");
+            }
+        }
+        
         ChallengeAnswerResponse response = challengeService.answerChallenge(challenge.get(), challengeAnswerRequest.getAnswer());
 
         return new SuccessResponse<>(response);
