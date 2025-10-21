@@ -3,7 +3,7 @@ package com.hugosouza.calculustempo.service;
 import com.hugosouza.calculustempo.model.Integral;
 import com.hugosouza.calculustempo.model.User;
 import com.hugosouza.calculustempo.repository.IntegralRepository;
-import com.hugosouza.calculustempo.util.Glicko2;
+import com.hugosouza.glicko2.Glicko2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

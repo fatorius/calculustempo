@@ -3,7 +3,7 @@ package com.hugosouza.calculustempo.service;
 import com.hugosouza.calculustempo.model.Integral;
 import com.hugosouza.calculustempo.model.User;
 import com.hugosouza.calculustempo.repository.UserRepository;
-import com.hugosouza.calculustempo.util.Glicko2;
+import com.hugosouza.glicko2.Glicko2;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

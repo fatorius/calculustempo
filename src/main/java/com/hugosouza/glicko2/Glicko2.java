@@ -1,4 +1,4 @@
-package com.hugosouza.calculustempo.util;
+package com.hugosouza.glicko2;
 
 public class Glicko2 {
     private static final double Q = Math.log(10) / 400.0;
