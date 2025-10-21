@@ -24,7 +24,7 @@ public class ChallengeService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    private static final int USER_DEFAULT_RANGE = 30;
+    private static final int USER_DEFAULT_RANGE = 80;
 
     public Optional<Challenge> findById(long challengeId){
         return challengeRepository.findById(challengeId);
