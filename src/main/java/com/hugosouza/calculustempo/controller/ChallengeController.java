@@ -62,7 +62,7 @@ public class ChallengeController {
         if (challenge.getResult_success() != null){
             return new ErrorResponse<>("Unauthorized");
         }
-        
+
         Long challengeUserId = challenge.getUser_id();
 
         if (userDetails != null && challengeUserId != null) {

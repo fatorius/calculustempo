@@ -44,20 +44,25 @@ public class Glicko2 {
         double fA = f(A, delta, phi, v, a);
         double fB = f(B, delta, phi, v, a);
 
-        while (Math.abs(B - A) > 1e-6) {
+        int iteration = 0;
+        while (Math.abs(B - A) > 1e-6 && iteration < 100) {
             double C = A + (A - B) * fA / (fB - fA);
             double fC = f(C, delta, phi, v, a);
+
             if (fC * fB < 0) {
                 A = B;
                 fA = fB;
+            } else {
+                fA /= 2.0;
             }
+
             B = C;
             fB = fC;
+            iteration++;
         }
 
         double newSigma = Math.exp(A / 2.0);
-
-
+        
         double phiStar = Math.sqrt(phi * phi + newSigma * newSigma);
         double phiPrime = 1.0 / Math.sqrt((1.0 / (phiStar * phiStar)) + (1.0 / v));
         double muPrime = mu + phiPrime * phiPrime * Q * g * (score - E);
