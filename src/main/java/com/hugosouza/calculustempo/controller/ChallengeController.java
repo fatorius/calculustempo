@@ -69,7 +69,7 @@ public class ChallengeController {
             if (userDetails == null) {
                 return new ErrorResponse<>("Unauthorized");
             }
-            
+
             User user = userRepository.findByUsername(userDetails.getUsername());
 
             if (!challengeUserId.equals(user.getId())){

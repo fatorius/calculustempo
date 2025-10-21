@@ -17,4 +17,13 @@ public interface IntegralRepository extends JpaRepository<Integral, Long> {
             @Param("minRating") int minRating,
             @Param("maxRating") int maxRating
     );
+
+    @Query(value = """
+    SELECT * FROM integrals
+    ORDER BY ABS(rating - :targetRating)
+    LIMIT 1
+    """, nativeQuery = true)
+    Integral findClosestIntegralFallback(
+            @Param("targetRating") int targetRating
+    );
 }

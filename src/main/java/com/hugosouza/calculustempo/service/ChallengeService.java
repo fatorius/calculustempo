@@ -46,6 +46,10 @@ public class ChallengeService {
     public Challenge createChallengeForUser(User user){
         Integral integral = integralService.pickARandomIntegralAtRange(user.getRating(), USER_DEFAULT_RANGE);
 
+        if (integral == null) {
+            integral = integralRepository.findClosestIntegralFallback(user.getRating());
+        }
+
         Challenge newChallenge = new Challenge(
                 IdGenerator.nextId(),
                 user.getId(),
