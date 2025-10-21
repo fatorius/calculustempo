@@ -51,13 +51,19 @@ public class ChallengeController {
             @PathVariable("challenge_id") Long challengeId,
             @RequestBody ChallengeAnswerRequest challengeAnswerRequest
     ) {
-        Optional<Challenge> challenge = challengeService.findById(challengeId);
+        Optional<Challenge> challengeRequest = challengeService.findById(challengeId);
 
-        if (challenge.isEmpty()){
+        if (challengeRequest.isEmpty()){
             return new ErrorResponse<>("Challenge not found");
         }
 
-        Long challengeUserId = challenge.get().getUser_id();
+        Challenge challenge = challengeRequest.get();
+
+        if (challenge.getResult_success() != null){
+            return new ErrorResponse<>("Unauthorized");
+        }
+        
+        Long challengeUserId = challenge.getUser_id();
 
         if (userDetails != null && challengeUserId != null) {
             User user = userRepository.findByUsername(userDetails.getUsername());
@@ -66,8 +72,8 @@ public class ChallengeController {
                 return new ErrorResponse<>("Unauthorized");
             }
         }
-        
-        ChallengeAnswerResponse response = challengeService.answerChallenge(challenge.get(), challengeAnswerRequest.getAnswer());
+
+        ChallengeAnswerResponse response = challengeService.answerChallenge(challenge, challengeAnswerRequest.getAnswer());
 
         return new SuccessResponse<>(response);
     }
