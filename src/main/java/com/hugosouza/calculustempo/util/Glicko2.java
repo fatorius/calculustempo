@@ -62,7 +62,7 @@ public class Glicko2 {
         }
 
         double newSigma = Math.exp(A / 2.0);
-        
+
         double phiStar = Math.sqrt(phi * phi + newSigma * newSigma);
         double phiPrime = 1.0 / Math.sqrt((1.0 / (phiStar * phiStar)) + (1.0 / v));
         double muPrime = mu + phiPrime * phiPrime * Q * g * (score - E);

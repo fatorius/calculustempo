@@ -65,7 +65,11 @@ public class ChallengeController {
 
         Long challengeUserId = challenge.getUser_id();
 
-        if (userDetails != null && challengeUserId != null) {
+        if (challengeUserId != null) {
+            if (userDetails == null) {
+                return new ErrorResponse<>("Unauthorized");
+            }
+            
             User user = userRepository.findByUsername(userDetails.getUsername());
 
             if (!challengeUserId.equals(user.getId())){
