@@ -6,18 +6,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Expression extends Term{
+public class Expression{
     private final List<Term> terms;
 
     public Expression (String latex){
-        super();
-
         this.terms = new ArrayList<>();
 
         List<String> parts = splitTerms(latex);
 
         for(String part : parts){
-            terms.add(new Term(part));
+            terms.add(TermFactory.createTerm(part));
         }
 
     }

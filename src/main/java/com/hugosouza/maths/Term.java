@@ -1,32 +1,13 @@
 package com.hugosouza.maths;
 
-public class Term {
-    private String value;
-    private String sign;
+abstract public class Term {
+    public static final String MONOMIAL = "Monomial";
+    public static final String FRACTION = "Fraction";
 
-    public Term() {
-        this.value = "";
-        this.sign = "";
-    }
+    static String type;
+    abstract public boolean equals(Term term);
 
-    public Term(String term){
-        super();
-
-        this.sign = "+";
-        this.value = term;
-
-        if (term.startsWith("-")){
-            this.sign = "-";
-            this.value = term.substring(1);
-        }
-
-        if (term.startsWith("+")){
-            this.sign = "+";
-            this.value = term.substring(1);
-        }
-    }
-
-    public boolean equals(Term term){
-        return this.value.equals(term.value) && this.sign.equals(term.sign);
+    public String getType(){
+        return type;
     }
 }
