@@ -1,20 +1,49 @@
 package com.hugosouza.maths;
 
-public class Fraction extends Term{
-    private Term numerator;
-    private Term denominator;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-    public Fraction() {
+public class Fraction extends Term{
+    private final Expression numerator;
+    private final Expression denominator;
+
+    public Fraction(String fractionLatex) {
+        if (fractionLatex.startsWith("-")){
+            this.setSignal(NEGATIVE);
+        }
+
+        String[] parts = this.extractLatexFractionParts(fractionLatex);
+
+        assert parts != null;
+        this.numerator = new Expression(parts[0]);
+        this.denominator = new Expression(parts[1]);
     }
 
     @Override
     public boolean equals(Term term) {
-        if (!term.getType().equals(Term.FRACTION)) {
+        if (!(term instanceof Fraction fraction)) {
             return false;
         }
 
-        Fraction fraction = (Fraction) term;
+        return numerator.equals(fraction.numerator) && denominator.equals(fraction.denominator) && Objects.equals(signal, term.getSignal());
+    }
 
-        return numerator.equals(fraction.numerator) && denominator.equals(fraction.denominator);
+    @Override
+    public String toString() {
+        return this.getSignal() + "\\frac{" + numerator.toString() + "}{" + denominator.toString() + "}";
+    }
+
+    private String[] extractLatexFractionParts(String latex){
+        Pattern pattern = Pattern.compile("\\\\frac\\{([^{}]+)}\\{([^{}]+)}");
+        Matcher matcher = pattern.matcher(latex);
+
+        if (matcher.find()) {
+            String numerator = matcher.group(1);
+            String denominator = matcher.group(2);
+            return new String[]{numerator, denominator};
+        }
+
+        return null;
     }
 }

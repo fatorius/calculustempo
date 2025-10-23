@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Expression{
+public class Expression extends Term{
     private final List<Term> terms;
 
     public Expression (String latex){
@@ -17,33 +17,13 @@ public class Expression{
         for(String part : parts){
             terms.add(TermFactory.createTerm(part));
         }
-
     }
 
-    public boolean equals(Expression expression){
-        boolean result = true;
-
-        if (this.numberOfTerms() != expression.numberOfTerms()){
-            return false;
-        }
-
-        int termNo = 0;
-        for (Term term : this.terms) {
-            if (!term.equals(expression.getTerm(termNo))){
-                return false;
-            }
-
-            termNo++;
-        }
-
-        return result;
-    }
-
-    public int numberOfTerms(){
+    public int getNumberOfTerms(){
         return terms.size();
     }
 
-    public Term getTerm(int index){
+    private Term getTerm(int index){
         return terms.get(index);
     }
 
@@ -66,5 +46,44 @@ public class Expression{
         terms.sort(Comparator.naturalOrder());
 
         return terms;
+    }
+
+    @Override
+    public boolean equals(Term term) {
+        if (!(term instanceof Expression expression)) {
+            if (this.terms.size() == 1){
+                return this.terms.get(0).equals(term);
+            }
+
+            return false;
+        }
+
+        boolean result = true;
+
+        if (this.getNumberOfTerms() != expression.getNumberOfTerms()){
+            return false;
+        }
+
+        int termNo = 0;
+        for (Term innterTerm : this.terms) {
+            if (!innterTerm.equals(expression.getTerm(termNo))){
+                return false;
+            }
+
+            termNo++;
+        }
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+        for (Term term : this.terms) {
+            str.append(term.toString());
+        }
+
+        return str.toString();
     }
 }
