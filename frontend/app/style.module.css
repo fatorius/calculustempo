@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.homepage {
+	@apply flex-1 px-6 py-4 flex w-full;
+}
+
+.ranking {
+	@apply w-1/4;
+}
+
+.ranking h2 {
+	@apply text-xl;
+}
+
+.ranking_table_row {
+	display: grid;
+	grid-template-columns: 0.5fr 3fr 1fr;
+}
