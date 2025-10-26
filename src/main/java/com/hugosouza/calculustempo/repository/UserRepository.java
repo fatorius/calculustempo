@@ -1,11 +1,14 @@
 package com.hugosouza.calculustempo.repository;
 
+import com.hugosouza.calculustempo.interfaces.RankingProjection;
 import com.hugosouza.calculustempo.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -18,4 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
         WHERE rating_deviation < 350
         """, nativeQuery = true)
     Page<User> findAllActiveUsers(Pageable pageable);
+
+    @Query(value = """
+        SELECT username, rating FROM users
+        ORDER BY rating ASC LIMIT 10
+        """, nativeQuery = true)
+    List<RankingProjection> getRanking();
 }
